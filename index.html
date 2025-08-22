@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Our Startup!</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h2 { text-align: center; color: #333; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; color: #555; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        #message { margin-top: 20px; text-align: center; font-weight: bold; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Register Your Interest</h2>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('registrationForm');
+        const messageDiv = document.getElementById('message');
+
+        form.addEventListener('submit', async (event) => {
+            // 1. Prevent the form from submitting the default way
+            event.preventDefault();
+
+            // 2. Clear previous messages and disable button
+            messageDiv.textContent = '';
+            messageDiv.className = '';
+            form.querySelector('button').disabled = true;
+            form.querySelector('button').textContent = 'Submitting...';
+
+            // 3. Get the data from the form
+            const formData = new FormData(form);
+            const userData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                age: formData.get('age')
+            };
+
+            // 4. Send the data to our backend serverless function
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(userData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    messageDiv.textContent = 'Thank you for registering!';
+                    messageDiv.className = 'success';
+                    form.reset(); // Clear the form
+                } else {
+                    // Display error message from the server
+                    messageDiv.textContent = `Error: ${result.message}`;
+                    messageDiv.className = 'error';
+                }
+            } catch (error) {
+                messageDiv.textContent = 'A network error occurred. Please try again.';
+                messageDiv.className = 'error';
+            } finally {
+                // 5. Re-enable the button
+                form.querySelector('button').disabled = false;
+                form.querySelector('button').textContent = 'Submit';
+            }
+        });
+    </script>
+</body>
+</html>
