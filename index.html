@@ -1,94 +1,466 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Our Startup!</title>
+    <title>UNMUTE - Your Journey to Mindfulness</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
-        body { font-family: sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        h2 { text-align: center; color: #333; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 5px; color: #555; }
-        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        button:hover { background-color: #0056b3; }
-        #message { margin-top: 20px; text-align: center; font-weight: bold; }
-        .success { color: green; }
-        .error { color: red; }
+        /* CSS Variables for easy color management */
+        :root {
+            --bg-color: #F4F4F1; /* Light gray for the page background */
+            --card-bg: #FFFFFF;
+            --text-dark: #333333;
+            --text-light: #777777;
+            --accent-gold: #C0A164;
+            --accent-green: #E1E3DF;
+            --border-color: #EAEAEA;
+            --font-heading: 'Lora', serif;
+            --font-body: 'Nunito Sans', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        /* The main container for the entire design */
+        .main-card {
+            width: 100%;
+            max-width: 900px; /* Maximum width of the card */
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Creates the two-column layout */
+            overflow: hidden; /* Keeps the background image contained */
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Left column for branding and text */
+        .content-left {
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-family: var(--font-body);
+            font-weight: 600;
+            letter-spacing: 4px;
+            color: var(--text-dark);
+            margin-bottom: 4rem;
+            font-size: 1rem;
+        }
+
+        .main-heading {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .sub-heading {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--accent-gold);
+            margin-top: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-light);
+            margin-bottom: auto; /* Pushes the decorative icons to the bottom */
+        }
+
+        .decorative-icons {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            /* Placeholder styles for lotus icon */
+        }
+        .decorative-icons .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+
+        /* Right column for the form and background image */
+        .content-right {
+            padding: 4rem;
+            background-image: 
+                /* Gradient overlay to make text readable */
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 1)),
+                /* Your background image */
+                url('https://images.unsplash.com/photo-1440342359743-844b48021fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .form-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+        
+        /* Styling for each form field group */
+        .form-group {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid var(--border-color); /* The underline style */
+            padding: 10px 30px 10px 5px; /* Space for the icon */
+            font-size: 1rem;
+            background-color: transparent;
+            font-family: var(--font-body);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-bottom-color: var(--accent-gold);
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--accent-gold);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #a98c58;
+        }
+        
+        #message {
+            margin-top: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* --- RESPONSIVE DESIGN FOR MOBILE --- */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem; /* Less padding on smaller screens */
+            }
+            .main-card {
+                grid-template-columns: 1fr; /* Stack columns on top of each other */
+                max-width: 400px;
+            }
+            .content-left, .content-right {
+                padding: 2rem; /* Reduce padding for smaller screens */
+            }
+            .main-heading {
+                font-size: 2rem;
+            }
+            .sub-heading {
+                font-size: 1.5rem;
+            }
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Register Your Interest</h2>
-        <form id="registrationForm">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="age">Age:</label>
-                <input type="number" id="age" name="age" required>
-            </div>
-            <button type="submit">Submit</button>
-        </form>
-        <div id="message"></div>
-    </div>
 
+    <main class="main-card">
+        <section class="content-left">
+            <div class="logo">UNMUTE</div>
+            
+            <h1 class="main-heading">Find Your Inner Silence</h1>
+            <h2 class="sub-heading">Begin Your Journey</h2>
+            
+            <p class="description">
+                Your journey to a more mindful you starts with a single step. Quiet the noise and discover the clarity within.
+            </p>
+
+            <div class="decorative-icons">
+                <i class="fa-solid fa-spa" style="color: var(--accent-green); font-size: 1.5rem;"></i> 
+                <div class="dot" style="background-color: var(--accent-green);"></div>
+                <div class="dot" style="background-color: var(--accent-gold);"></div>
+            </div>
+        </section>
+
+        <section class="content-right">
+            <h3 class="form-heading">Registration</h3>
+            
+            <form id="registrationForm">
+                <div class="form-group">
+                    <input type="text" id="full_name" name="full_name" placeholder="Name" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+
+                <button type="submit" class="submit-button">Join Now</button>
+            </form>
+            <div id="message"></div>
+        </section>
+    </main>
+    
+    <script>
+        const form = document.getElementById('registrationForm');
+        // Add your form submission logic here
+    </script>
+
+</body>
+</html> --><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNMUTE - Your Journey to Mindfulness</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #F4F4F1;
+            --card-bg: #FFFFFF;
+            --text-dark: #333333;
+            --text-light: #777777;
+            --accent-gold: #C0A164;
+            --accent-green: #E1E3DF;
+            --border-color: #EAEAEA;
+            --font-heading: 'Lora', serif;
+            --font-body: 'Nunito Sans', sans-serif;
+        }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        .main-card {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .content-left {
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .logo {
+            font-family: var(--font-body);
+            font-weight: 600;
+            letter-spacing: 4px;
+            color: var(--text-dark);
+            margin-bottom: 4rem;
+            font-size: 1rem;
+        }
+        .main-heading { font-family: var(--font-heading); font-size: 2.8rem; font-weight: 400; margin: 0; }
+        .sub-heading { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 400; color: var(--accent-gold); margin-top: 0.5rem; margin-bottom: 1.5rem; }
+        .description { font-size: 1rem; line-height: 1.6; color: var(--text-light); margin-bottom: auto; }
+        .decorative-icons { display: flex; align-items: center; gap: 0.5rem; margin-top: 2rem; }
+        .decorative-icons .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .content-right {
+            padding: 4rem;
+            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 1)), url('https://images.unsplash.com/photo-1440342359743-844b48021fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        .form-heading { font-size: 1.1rem; font-weight: 600; color: var(--text-light); margin-bottom: 2rem; }
+        .form-group { position: relative; margin-bottom: 1.5rem; } /* Reduced margin */
+        .form-group input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 5px;
+            font-size: 1rem;
+            background-color: transparent;
+            font-family: var(--font-body);
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus { outline: none; border-bottom-color: var(--accent-gold); }
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            margin-top: 2rem; /* Added margin */
+            background-color: var(--accent-gold);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-button:hover { background-color: #a98c58; }
+        #message { margin-top: 1.5rem; font-weight: 600; }
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .main-card { grid-template-columns: 1fr; max-width: 400px; }
+            .content-left, .content-right { padding: 2rem; }
+            .main-heading { font-size: 2rem; }
+            .sub-heading { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <main class="main-card">
+        <section class="content-left">
+            <div class="logo">UNMUTE</div>
+            <h1 class="main-heading">Find Your Inner Silence</h1>
+            <h2 class="sub-heading">Begin Your Journey</h2>
+            <p class="description">Your journey to a more mindful you starts with a single step. Quiet the noise and discover the clarity within.</p>
+            <div class="decorative-icons">
+                <i class="fa-solid fa-spa" style="color: var(--accent-green); font-size: 1.5rem;"></i> 
+                <div class="dot" style="background-color: var(--accent-green);"></div>
+                <div class="dot" style="background-color: var(--accent-gold);"></div>
+            </div>
+        </section>
+
+        <section class="content-right">
+            <h3 class="form-heading">Registration</h3>
+            
+            <form id="registrationForm">
+                <div class="form-group">
+                    <input type="text" id="full_name" name="full_name" placeholder="Full Name" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" id="city" name="city" placeholder="City (Optional)">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="state" name="state" placeholder="State (Optional)">
+                </div>
+
+                <button type="submit" class="submit-button">Join Now</button>
+            </form>
+            <div id="message"></div>
+        </section>
+    </main>
+    
     <script>
         const form = document.getElementById('registrationForm');
         const messageDiv = document.getElementById('message');
 
         form.addEventListener('submit', async (event) => {
-            // 1. Prevent the form from submitting the default way
-            event.preventDefault();
+            event.preventDefault(); // Stop the form from reloading the page
 
-            // 2. Clear previous messages and disable button
-            messageDiv.textContent = '';
-            messageDiv.className = '';
-            form.querySelector('button').disabled = true;
-            form.querySelector('button').textContent = 'Submitting...';
+            messageDiv.textContent = ''; // Clear previous messages
+            const submitButton = form.querySelector('button');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
 
-            // 3. Get the data from the form
-            const formData = new FormData(form);
-            const userData = {
-                name: formData.get('name'),
-                email: formData.get('email'),
-                age: formData.get('age')
+            // Collect the data from the form fields
+            const formData = {
+                full_name: form.full_name.value,
+                email: form.email.value,
+                city: form.city.value,
+                state: form.state.value
             };
 
-            // 4. Send the data to our backend serverless function
             try {
+                // Send the data to our backend API
                 const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(userData)
+                    body: JSON.stringify(formData)
                 });
 
                 const result = await response.json();
 
                 if (response.ok) {
                     messageDiv.textContent = 'Thank you for registering!';
-                    messageDiv.className = 'success';
-                    form.reset(); // Clear the form
+                    messageDiv.style.color = 'green';
+                    form.reset(); // Clear the form fields
                 } else {
-                    // Display error message from the server
+                    // Display the error message from the server
                     messageDiv.textContent = `Error: ${result.message}`;
-                    messageDiv.className = 'error';
+                    messageDiv.style.color = 'red';
                 }
             } catch (error) {
                 messageDiv.textContent = 'A network error occurred. Please try again.';
-                messageDiv.className = 'error';
+                messageDiv.style.color = 'red';
             } finally {
-                // 5. Re-enable the button
-                form.querySelector('button').disabled = false;
-                form.querySelector('button').textContent = 'Submit';
+                // Re-enable the button
+                submitButton.disabled = false;
+                submitButton.textContent = 'Join Now';
             }
         });
     </script>
+
 </body>
 </html>

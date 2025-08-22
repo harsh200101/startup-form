@@ -1,49 +1,68 @@
-// Import the Supabase client library
+// api/register.js
+
 import { createClient } from '@supabase/supabase-js';
 
-// These details are safe to use in a serverless function
-// They will be loaded from Vercel's environment variables
+// Load credentials from Vercel's environment variables
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// This is the main function that Vercel will run
+// --- NEW: Function to generate the unique random ID ---
+// Creates an ID like "GG" + 6 random digits (e.g., GG123456)
+function generateUniqueId() {
+    const prefix = 'GG';
+    const randomNumber = Math.floor(100000 + Math.random() * 900000);
+    return `${prefix}${randomNumber}`;
+}
+
+// The main serverless function
 export default async function handler(request, response) {
-    // We only want to handle POST requests, reject others
     if (request.method !== 'POST') {
         return response.status(405).json({ message: 'Method Not Allowed' });
     }
 
     try {
-        // Get the user data from the request body
-        const { name, email, age } = request.body;
+        // --- UPDATED: Get data that matches your database schema ---
+        const { full_name, email, city, state } = request.body;
+        
+        // --- Generate the new unique ID ---
+        const newUserId = generateUniqueId();
 
-        // Basic validation: check if required fields are present
-        if (!name || !email || !age) {
-            return response.status(400).json({ message: 'Name, email, and age are required.' });
+        // Basic validation for required fields
+        if (!full_name || !email) {
+            return response.status(400).json({ message: 'Full name and email are required.' });
         }
 
-        // Insert the data into the 'users' table in Supabase
+        // --- UPDATED: This is the exact object that will be saved to your database ---
+        const userDataToInsert = {
+            id: newUserId,
+            full_name: full_name,
+            email: email,
+            city: city || null, // If city is not provided, save it as NULL
+            state: state || null // If state is not provided, save it as NULL
+        };
+
+        // Insert the data into the 'users' table
         const { data, error } = await supabase
             .from('users')
-            .insert([{ name, email, age }])
+            .insert([userDataToInsert])
             .select();
 
-        // If there was an error inserting data
+        // Handle errors from Supabase
         if (error) {
             console.error('Supabase error:', error);
-            // Check for specific errors, like a duplicate email
-            if (error.code === '23505') { // Postgres code for unique violation
-                 return response.status(409).json({ message: 'This email is already registered.' });
+            // Check for a duplicate email error
+            if (error.code === '23505') {
+                 return response.status(409).json({ message: 'This email address is already registered.' });
             }
-            return response.status(500).json({ message: 'Error saving data to the database.' });
+            return response.status(500).json({ message: 'Error saving data.' });
         }
 
-        // If data was inserted successfully
-        return response.status(200).json({ message: 'User registered successfully!', user: data });
+        // Success!
+        return response.status(200).json({ message: 'Registration successful!', user: data });
 
-    } catch (error) {
-        console.error('Server error:', error);
+    } catch (err) {
+        console.error('Server error:', err);
         return response.status(500).json({ message: 'An unexpected error occurred.' });
     }
 }
